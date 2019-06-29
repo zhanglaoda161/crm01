@@ -16,15 +16,15 @@
 
 
 
-$.ajax(
+$.ajax({
         url: "",
         data:{
 
         },
         type:"",
         dataType:"json",
-        success:function(data) {
+        success:function(data) {}
 
-}
+})
 </body>
 </html>

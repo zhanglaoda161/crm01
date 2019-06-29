@@ -23,11 +23,35 @@ To change this template use File | Settings | File Templates.
 <script type="text/javascript">
 
 	$(function(){
-		
+		$("#addBtn").click(function () {
+
+			/*
+			* 操作模态窗口
+			* 操作模态窗口的jquery对象,调用model方法呢为该方法传递参数参数取值:show:打开模态,hide:关闭模态窗口
+			*
+			*/
+			$.ajax({
+					url: "workbench/activity/getUserList.do",
+					type:"get",
+					dataType:"json",
+					success:function(data) {
+						var html="<option></option>";
+						$.each(data,function (i, n) {
+							html+="<option value='"+n.id+"'>"+n.name+"</option>"
+						})
+
+						$("#create-marketActivityOwner").html(html);
+
+					}
+
+			})
+
+			$("#createActivityModal").modal("show")
+		})
 		
 		
 	});
-	
+
 </script>
 </head>
 <body>
@@ -50,9 +74,7 @@ To change this template use File | Settings | File Templates.
 							<label for="create-marketActivityOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="create-marketActivityOwner">
-								  <option>zhangsan</option>
-								  <option>lisi</option>
-								  <option>wangwu</option>
+
 								</select>
 							</div>
                             <label for="create-marketActivityName" class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
@@ -211,7 +233,13 @@ To change this template use File | Settings | File Templates.
 			</div>
 			<div class="btn-toolbar" role="toolbar" style="background-color: #F7F7F7; height: 50px; position: relative;top: 5px;">
 				<div class="btn-group" style="position: relative; top: 18%;">
-				  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createActivityModal"><span class="glyphicon glyphicon-plus"></span> 创建</button>
+					<!--
+					data-toggle="modal"打开一个模态窗口
+					data-target="#createActivityModal"
+					指定模态敞口,通过id指定
+
+					-->
+				  <button type="button" class="btn btn-primary" id="addBtn"><span class="glyphicon glyphicon-plus"></span> 创建</button>
 				  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editActivityModal"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
 				  <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>

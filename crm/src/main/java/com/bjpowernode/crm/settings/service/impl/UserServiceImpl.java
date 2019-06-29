@@ -11,6 +11,7 @@ import com.bjpowernode.crm.util.DateTimeUtil;
 import com.bjpowernode.crm.util.SqlSessionUtil;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UserServiceImpl implements UserService {
@@ -44,5 +45,11 @@ public class UserServiceImpl implements UserService {
         //成功,返回user
 
         return user;
+    }
+
+    @Override
+    public List<User> getUserList() {
+        List<User> userList=userDao.getUserList();
+        return userList;
     }
 }
