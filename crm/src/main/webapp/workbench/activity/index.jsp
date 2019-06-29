@@ -42,11 +42,15 @@ To change this template use File | Settings | File Templates.
 
 						$("#create-marketActivityOwner").html(html);
 
+						var id="${user.id}";
+						$("#create-marketActivityOwner").val(id);
+						$("#createActivityModal").modal("show")
+
 					}
 
 			})
 
-			$("#createActivityModal").modal("show")
+
 		})
 		
 		
