@@ -23,6 +23,19 @@ To change this template use File | Settings | File Templates.
 <script type="text/javascript">
 
 	$(function(){
+
+		$(".time").datetimepicker({
+			minView: "month",
+			language:  'zh-CN',
+			format: 'yyyy-mm-dd',
+			autoclose: true,
+			todayBtn: true,
+			pickerPosition: "bottom-left"
+		});
+
+
+
+
 		$("#addBtn").click(function () {
 
 			/*
@@ -40,10 +53,10 @@ To change this template use File | Settings | File Templates.
 							html+="<option value='"+n.id+"'>"+n.name+"</option>"
 						})
 
-						$("#create-marketActivityOwner").html(html);
+						$("#create-owner").html(html);
 
 						var id="${user.id}";
-						$("#create-marketActivityOwner").val(id);
+						$("#create-owner").val(id);
 						$("#createActivityModal").modal("show")
 
 					}
@@ -52,7 +65,46 @@ To change this template use File | Settings | File Templates.
 
 
 		})
-		
+
+
+		//为保存按钮绑定事件,执行市场活动的添加
+		$("#saveBtn").click(function () {
+			$.ajax({
+				url: "workbench/activity/save.do",
+				data:{
+
+					"owner" :$.trim("owner"),
+					"name" :$.trim("name"),
+					"startDate" :$.trim("startDate"),
+					"endDate" :$.trim("endDate"),
+					"cost" :$.trim("cost"),
+					"description" :$.trim("description")
+				},
+				type:"post",
+				dataType:"json",
+				success:function(data) {
+					/*
+				* data
+				* {"success":true/false}
+				* */
+					
+					if (data.success) {
+						//添加成功
+
+						//刷新列表
+						//清除模态窗口信息
+						$("#activitySaveForm")[0].reset();
+						//关闭模态窗口
+						$("#createActivityModal").modal("hide");
+					}else {
+						alert("市场活动添加失败")
+					}
+					
+				}
+				
+				
+			})
+		})
 		
 	});
 
@@ -72,29 +124,29 @@ To change this template use File | Settings | File Templates.
 				</div>
 				<div class="modal-body">
 				
-					<form class="form-horizontal" role="form">
+					<form class="activitySaveForm" role="form">
 					
 						<div class="form-group">
 							<label for="create-marketActivityOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
 							<div class="col-sm-10" style="width: 300px;">
-								<select class="form-control" id="create-marketActivityOwner">
+								<select class="form-control" id="create-owner">
 
 								</select>
 							</div>
                             <label for="create-marketActivityName" class="col-sm-2 control-label">名称<span style="font-size: 15px; color: red;">*</span></label>
                             <div class="col-sm-10" style="width: 300px;">
-                                <input type="text" class="form-control" id="create-marketActivityName">
+                                <input type="text" class="form-control" id="create-name">
                             </div>
 						</div>
 						
 						<div class="form-group">
-							<label for="create-startTime" class="col-sm-2 control-label">开始日期</label>
+							<label for="create-startTime" class="col-sm-2 control-label t">开始日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-startTime">
+								<input type="text" class="form-control time" id="create-startDate" readonly>
 							</div>
 							<label for="create-endTime" class="col-sm-2 control-label">结束日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-endTime">
+								<input type="text" class="form-control time" id="create-endDate" readonly>
 							</div>
 						</div>
                         <div class="form-group">
@@ -107,7 +159,7 @@ To change this template use File | Settings | File Templates.
 						<div class="form-group">
 							<label for="create-describe" class="col-sm-2 control-label">描述</label>
 							<div class="col-sm-10" style="width: 81%;">
-								<textarea class="form-control" rows="3" id="create-describe"></textarea>
+								<textarea class="form-control" rows="3" id="create-description"></textarea>
 							</div>
 						</div>
 						
@@ -115,8 +167,12 @@ To change this template use File | Settings | File Templates.
 					
 				</div>
 				<div class="modal-footer">
+					<!--
+					data-dismiss="modal"关闭模态窗口
+
+					-->
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+					<button type="button" class="btn btn-primary" id="saveBtn">保存</button>
 				</div>
 			</div>
 		</div>
